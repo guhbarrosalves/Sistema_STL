@@ -5,34 +5,46 @@ em itálico quando preencher.
 
 ## Nome e ideia
 
-_Duas ou três frases: o que o sistema é e para quem serve._
+A minha ideia é fazer um estoque que possui sessões e produtos.
 
 ## O que o sistema guarda
 
-_As coisas que o sistema cadastra (livros, times, itens...) e o que cada uma
-tem (nome, preço, quantidade...)._
+Cada produto possui um nome (com a marca descrita no nome), uma quantidade e um preço.
+Cada sessão possui um set de produtos.
+Cada mercado possui um map com chave/valor sendo sessão/produto.
 
 ## O que dá para fazer
 
-_Cada opção do menu ou cada comando, com o que ele pede e o que mostra._
+Tera uma interface de auxílio, que aparece quando o usuário digita "-h" ou "--help".
+O mercado poderá adicionar novos produtos, adicioná-los em alguma sessão já criada e removê-los do estoque, caso tenham sido vendidos.
+
+Na interface que o usuário terá acesso, ele fará tudo o que deve fazer através de comandos, que serão listados no menu de ajuda, como criar sessão, adicionar produto, modificar preço, modificar quantidade, remover produto, buscar produto.
+
+Ao mesmo tempo, há também um comando para exibir todo o estoque, exibindo os produtos por sessão.
 
 ## Regras
 
-_O que é permitido e o que não é. Por exemplo: não pode haver dois livros com
-o mesmo título; nota vai de 0 a 10; a tabela ordena por pontos e, empatando,
-por saldo de gols._
+ Caso alguma sessão não exista, retorna uma mensagem dizendo isso e não adiciona o produto ao estoque.
+
+Como as estruturas de dados usadas não permitem duplicatas, o usuário não conseguirá criar duas vezes o mesmo produto, apenas conseguirá alterar a quantidade e seu preço. Apesar disso, caso seja criado um produto com o mesmo nome, uma mensagem deve ser retornada dizendo que o produto já existe e que apenas o preço e quantidade podem ser alterados.
 
 ## Quando algo dá errado
 
-_O que o sistema faz quando o item procurado não existe, quando o cadastro já
-existe, quando a lista está vazia, quando a entrada é inválida._
+Como as estruturas de dados usadas não permitem duplicatas, o usuário não conseguirá criar duas vezes o mesmo produto, apenas conseguirá alterar a quantidade e seu preço.
+
+Quando um produto é buscado e não encontrado, ou é adicionado em uma sessão que não existe, uma mensagem é retornada no terminal dizendo que o produto não foi encontrado ou que a sessão não existe, mostrando em seguida o comando para adicioná-lo ou criá-lo.
 
 ## Classes que eu imagino
 
-_Uma linha para cada classe: o nome e a responsabilidade dela. Não precisa
-ser a versão final; o plano com a IA pode mudar isso._
+A minha ideia é fazer um estoque que possui sessões e produtos.
+Com isso, criamos 3 classes: uma classe de produto, outra de sessões e outra do mercado.
+
+Cada produto possui um nome (com a marca descrita no nome), uma quantidade e um preço.
+Cada sessão possui um set de produtos.
+Cada mercado possui um map com chave/valor sendo sessão/produto.
 
 ## Exemplo de uso
 
-_Uma sequência curta de uso e o que aparece na tela, do jeito que você
-imagina._
+CRIAR_SESSAO Alimentos
+ADD_PRODUTO Café - Kimimo 5.99 10 Alimentos
+ESTOQUE // Exibe todo o estoque
