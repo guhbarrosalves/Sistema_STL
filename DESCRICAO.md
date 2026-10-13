@@ -1,50 +1,76 @@
 # Descrição do sistema
-
-Escreva este arquivo sem IA, antes de qualquer código. Apague as instruções
-em itálico quando preencher.
-
 ## Nome e ideia
 
-A minha ideia é fazer um estoque que possui sessões e produtos.
+A minha ideia é fazer um estoque que possui seções e produtos.
 
 ## O que o sistema guarda
 
-Cada produto possui um nome (com a marca descrita no nome), uma quantidade e um preço.
-Cada sessão possui um set de produtos.
-Cada mercado possui um map com chave/valor sendo sessão/produto.
+Cada produto possui um nome (formatação: nome - marca) (string), uma quantidade (inteiro positivo) e um preço (double positivo com duas casas decimais).
+O nome do produto é formatado dessa forma: nome - marca. Ex: "Café - Kimimo".
+Cada seção possui um set de produtos.
+Cada estoque possui um map com chave/valor sendo a chave a seção e o valor, um set dos produtos.
 
 ## O que dá para fazer
 
-Tera uma interface de auxílio, que aparece quando o usuário digita "-h" ou "--help".
-O mercado poderá adicionar novos produtos, adicioná-los em alguma sessão já criada e removê-los do estoque, caso tenham sido vendidos.
+Terá uma interface de auxílio, que aparece quando o usuário digita "-h" ou "--help".
+Essa interface de apoio servirá para mostrar como se deve mostrar todos os comandos, a estrutura deles, como os argumentos devem ser passados, o nome das funções, etc...
+O estoque poderá adicionar novos produtos, adicioná-los em alguma seção já criada e removê-los.
 
-Na interface que o usuário terá acesso, ele fará tudo o que deve fazer através de comandos, que serão listados no menu de ajuda, como criar sessão, adicionar produto, modificar preço, modificar quantidade, remover produto, buscar produto.
+Na interface que o usuário terá acesso, ele fará tudo o que deve fazer através de comandos, que serão listados no menu de ajuda como:
 
-Ao mesmo tempo, há também um comando para exibir todo o estoque, exibindo os produtos por sessão.
+Criar seção: Recebe o nome da seção e a cria. Caso a seção já exista, retorna uma mensagem dizendo isso.
+Adicionar produto: Recebe nome do produto, seu preço, quantidade e a seção em que ele será adicionado. Caso o produto já exista na mesma seção, exibe uma mensagem dizendo isso. Caso a seção não exista, retorna uma mensagem dizendo isso e não adiciona o produto ao estoque.
+
+Modificar preço: Recebe o nome, com "nome - marca", o novo preço, a seção em que o produto está. Caso o produto não exista, exibe uma mensagem dizendo isso. O preço não pode ser o mesmo - retorna uma mensagem dizendo que se está colocando o mesmo preço no produto e mantém o antigo.
+
+Modificar quantidade: Recebe o nome, com "nome - marca", a nova quantidade e a seção em que o produto está. Caso o produto não exista, exibe uma mensagem dizendo isso. A quantidade não pode ser a mesma - retorna uma mensagem dizendo que se está colocando a mesma quantidade no produto e mantém o antigo.
+
+Remover produto: Recebe o nome do produto e a seção e o exclui ele do set. Caso o produto não exista, exibe uma mensagem dizendo isso.
+
+Buscar produto: Recebe o nome, e a seção em que o produto está. Caso o produto não exista, exibe uma mensagem dizendo isso.
+Nesse último comando em específico, se o usuário digitar só o nome, sem o separador " - ", o sistema varre o set daquela seção e compara o trecho antes do " - " de cada produto, exibindo todos os que tiverem esse nome, mostrando nome completo, preço, quantidade e seção. 
+
+Ao mesmo tempo, há também um comando para exibir todo o estoque, exibindo os produtos por seção.
+Caso nada tenha sido criado, exibe uma mensagem de que o estoque está vazio.
+Ele entra em todas as seções e imprime:
+Nome da seção:
+Produtos
+
+Comando FIM: Ao digitar esse comando, o usuário encerra o programa.
+Caso o usuário digite um comando inválido, ou faltando argumento, retorna, respectivamente, uma mensagem dizendo que o comando é inválido ou que um dos argumentos está errado. 
 
 ## Regras
 
- Caso alguma sessão não exista, retorna uma mensagem dizendo isso e não adiciona o produto ao estoque.
-
-Como as estruturas de dados usadas não permitem duplicatas, o usuário não conseguirá criar duas vezes o mesmo produto, apenas conseguirá alterar a quantidade e seu preço. Apesar disso, caso seja criado um produto com o mesmo nome, uma mensagem deve ser retornada dizendo que o produto já existe e que apenas o preço e quantidade podem ser alterados.
+Nenhum produto pode ser criado sem ser adicionado em alguma seção.
+Caso seja criado um produto com mesmo nome e marca, uma mensagem deve ser retornada dizendo que o produto já existe na seção e que apenas o preço e quantidade podem ser alterados.
+Os dados ficam apenas na memória.
+As informações que são strings, são sempre passadas com aspas. Os argumentos passados na linha de comando são separados pelo próprio espaço, por isso as strings devem ser passadas sempre com aspas.
+Caso o usuário digite algum valor negativo ou zero, retorna uma mensagem dizendo isso e não faz nada, ou seja, não realiza a operação.
+O operador < para a ordenação do set será definido pela ordem alfabética, ou seja, compara o nome completo e ordena os produtos, sendo também sensível a maiúsculas.
+Cada método devolve um status/mensagem e a interface decide o que imprimir.
+A interface lê um comando por linha, exibindo a saída correspondente até encontrar o comando FIM.
 
 ## Quando algo dá errado
 
-Como as estruturas de dados usadas não permitem duplicatas, o usuário não conseguirá criar duas vezes o mesmo produto, apenas conseguirá alterar a quantidade e seu preço.
-
-Quando um produto é buscado e não encontrado, ou é adicionado em uma sessão que não existe, uma mensagem é retornada no terminal dizendo que o produto não foi encontrado ou que a sessão não existe, mostrando em seguida o comando para adicioná-lo ou criá-lo.
+Retorna uma mensagem explicando a situação baseada na seção 'Regras' e não executa a ação.
 
 ## Classes que eu imagino
 
-A minha ideia é fazer um estoque que possui sessões e produtos.
-Com isso, criamos 3 classes: uma classe de produto, outra de sessões e outra do mercado.
+A minha ideia é fazer um estoque que possui seções e produtos.
+Com isso, criamos 3 classes: uma classe de produto, outra de seções e outra do estoque.
 
 Cada produto possui um nome (com a marca descrita no nome), uma quantidade e um preço.
-Cada sessão possui um set de produtos.
-Cada mercado possui um map com chave/valor sendo sessão/produto.
+Cada seção possui um set de produtos.
+Cada estoque possui um map com chave/valor sendo seção/set de produtos.
 
 ## Exemplo de uso
+Esqueleto dos comandos:
 
-CRIAR_SESSAO Alimentos
-ADD_PRODUTO Café - Kimimo 5.99 10 Alimentos
+CRIAR_SECAO "nome da seção"
+ADD_PRODUTO "nome" preço quantidade "seção"
+MOD_PRECO "nome" novo_preço "seção"
+MOD_QNT "nome" nova_qnt "seção"
+REM_PROD "nome" "seção"
+BUSCAR_PROD "nome" "seção"
 ESTOQUE // Exibe todo o estoque
+FIM //encerra a inserção no estoque
