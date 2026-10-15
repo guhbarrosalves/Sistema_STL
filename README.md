@@ -47,4 +47,4 @@ Escreva com as suas palavras:
 - Modelo usado: Big Pickle
 - Um pedido que deu certo, e por que você acha que deu certo:
 - Um pedido que deu errado, o que veio errado e como você mudou o pedido:
-- Uma coisa que a IA sugeriu e você recusou, e por quê:
+- Uma coisa que a IA sugeriu e você recusou, e por quê: Caso o usuário não desse nome para a seção, aceitasse como argumento válido. Não aceitei porque não há sentido uma seção não ter nome.

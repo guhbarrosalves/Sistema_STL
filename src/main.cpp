@@ -1,14 +1,22 @@
 #include <iostream>
+#include <map>
+#include <set>
+#include <string>
 #include <vector>
 
+#include "Estoque.hpp"
 #include "Produto.hpp"
 #include "Secao.hpp"
 #include "Status.hpp"
 
-// Temporário: só para o teste da Etapa 2. Na Etapa 4 a Interface fará isso.
+// Temporário: só para o teste da Etapa 3. Na Etapa 4 a Interface fará isso.
 void imprimirStatus(Status s) {
     if (s == OK) {
         std::cout << "OK" << std::endl;
+    } else if (s == SECAO_EXISTENTE) {
+        std::cout << "SECAO_EXISTENTE" << std::endl;
+    } else if (s == SECAO_INEXISTENTE) {
+        std::cout << "SECAO_INEXISTENTE" << std::endl;
     } else if (s == PRODUTO_EXISTENTE) {
         std::cout << "PRODUTO_EXISTENTE" << std::endl;
     } else if (s == PRODUTO_INEXISTENTE) {
@@ -22,88 +30,118 @@ void imprimirStatus(Status s) {
     }
 }
 
-void imprimirProdutos(const std::vector<Produto> &produtos) {
-    if (produtos.empty()) {
-        std::cout << "  (nenhum)" << std::endl;
+void imprimirEstoque(const Estoque &estoque) {
+    if (estoque.vazio()) {
+        std::cout << "  (estoque vazio)" << std::endl;
         return;
     }
-    for (std::vector<Produto>::size_type i = 0; i < produtos.size(); ++i) {
-        std::cout << "  " << produtos[i].getNome()
-                  << " | qnt: " << produtos[i].getQuantidade()
-                  << " | preco: " << produtos[i].getPreco() << std::endl;
+    const std::map<std::string, Secao> &secoes = estoque.getSecoes();
+    std::map<std::string, Secao>::const_iterator it;
+    for (it = secoes.begin(); it != secoes.end(); ++it) {
+        std::cout << "  " << it->first << ":" << std::endl;
+        const std::set<Produto> &produtos = it->second.getProdutos();
+        if (produtos.empty()) {
+            std::cout << "    (nenhum produto)" << std::endl;
+        }
+        std::set<Produto>::const_iterator p;
+        for (p = produtos.begin(); p != produtos.end(); ++p) {
+            std::cout << "    " << p->getNome()
+                      << " | qnt: " << p->getQuantidade()
+                      << " | preco: " << p->getPreco() << std::endl;
+        }
     }
 }
 
 int main() {
-    Secao secao("Mercearia");
-    std::cout << "vazia no inicio: " << (secao.vazia() ? "sim" : "nao") << std::endl;
+    Estoque estoque;
 
-    std::cout << "add Cafe - Kimimo: ";
-    imprimirStatus(secao.adicionar(Produto("Cafe - Kimimo", 10, 5.50)));
+    std::cout << "vazio no inicio: " << (estoque.vazio() ? "sim" : "nao")
+              << std::endl;
 
-    std::cout << "add Arroz - Tio Joao: ";
-    imprimirStatus(secao.adicionar(Produto("Arroz - Tio Joao", 5, 4.00)));
+    std::cout << "criarSecao Mercearia: ";
+    imprimirStatus(estoque.criarSecao("Mercearia"));
+
+    std::cout << "criarSecao Mercearia de novo: ";
+    imprimirStatus(estoque.criarSecao("Mercearia"));
+
+    std::cout << "criarSecao \"\" (vazia): ";
+    imprimirStatus(estoque.criarSecao(""));
+
+    std::cout << "criarSecao Bebidas: ";
+    imprimirStatus(estoque.criarSecao("Bebidas"));
+
+    std::cout << "add Cafe - Kimimo na secao NaoExiste: ";
+    imprimirStatus(
+        estoque.adicionarProduto(Produto("Cafe - Kimimo", 10, 5.50), "NaoExiste"));
+
+    std::cout << "add Cafe - Kimimo na Mercearia: ";
+    imprimirStatus(
+        estoque.adicionarProduto(Produto("Cafe - Kimimo", 10, 5.50), "Mercearia"));
 
     std::cout << "add Cafe - Kimimo de novo: ";
-    imprimirStatus(secao.adicionar(Produto("Cafe - Kimimo", 2, 6.00)));
+    imprimirStatus(
+        estoque.adicionarProduto(Produto("Cafe - Kimimo", 2, 6.00), "Mercearia"));
 
-    std::cout << "add Cafe (sem marca): ";
-    imprimirStatus(secao.adicionar(Produto("Cafe", 3, 2.00)));
+    std::cout << "add Cafe (sem marca) na Mercearia: ";
+    imprimirStatus(
+        estoque.adicionarProduto(Produto("Cafe", 3, 2.00), "Mercearia"));
 
-    std::cout << "add Sal - Cypress com qnt 0: ";
-    imprimirStatus(secao.adicionar(Produto("Sal - Cypress", 0, 1.00)));
+    std::cout << "add Arroz - Tio Joao na Mercearia: ";
+    imprimirStatus(
+        estoque.adicionarProduto(Produto("Arroz - Tio Joao", 5, 4.00), "Mercearia"));
 
-    std::cout << "modificarPreco Cafe - Kimimo para 6.00: ";
-    imprimirStatus(secao.modificarPreco("Cafe - Kimimo", 6.00));
+    std::cout << "add Agua - Minalba em Bebidas: ";
+    imprimirStatus(
+        estoque.adicionarProduto(Produto("Agua - Minalba", 20, 2.50), "Bebidas"));
 
-    std::cout << "modificarPreco Cafe - Kimimo para 6.00 de novo: ";
-    imprimirStatus(secao.modificarPreco("Cafe - Kimimo", 6.00));
+    std::cout << "remover Cafe - Kimimo na NaoExiste: ";
+    imprimirStatus(estoque.removerProduto("Cafe - Kimimo", "NaoExiste"));
 
-    std::cout << "modificarPreco Cafe - Kimimo para -1: ";
-    imprimirStatus(secao.modificarPreco("Cafe - Kimimo", -1));
+    std::cout << "remover Chocolate - Lacta (nao existe) na Mercearia: ";
+    imprimirStatus(estoque.removerProduto("Chocolate - Lacta", "Mercearia"));
 
-    std::cout << "modificarPreco Chocolate - Lacta (nao existe): ";
-    imprimirStatus(secao.modificarPreco("Chocolate - Lacta", 3.00));
+    std::cout << "remover Cafe - Kimimo da Mercearia: ";
+    imprimirStatus(estoque.removerProduto("Cafe - Kimimo", "Mercearia"));
+
+    std::cout << "modificarPreco Arroz - Tio Joao para 4.50 na NaoExiste: ";
+    imprimirStatus(estoque.modificarPreco("Arroz - Tio Joao", 4.50, "NaoExiste"));
+
+    std::cout << "modificarPreco Arroz - Tio Joao para 4.50 na Mercearia: ";
+    imprimirStatus(estoque.modificarPreco("Arroz - Tio Joao", 4.50, "Mercearia"));
+
+    std::cout << "modificarPreco Arroz - Tio Joao para 4.50 de novo: ";
+    imprimirStatus(estoque.modificarPreco("Arroz - Tio Joao", 4.50, "Mercearia"));
+
+    std::cout << "modificarPreco Arroz - Tio Joao para -1: ";
+    imprimirStatus(estoque.modificarPreco("Arroz - Tio Joao", -1, "Mercearia"));
 
     std::cout << "modificarQuantidade Arroz - Tio Joao para 8: ";
-    imprimirStatus(secao.modificarQuantidade("Arroz - Tio Joao", 8));
+    imprimirStatus(estoque.modificarQuantidade("Arroz - Tio Joao", 8, "Mercearia"));
 
     std::cout << "modificarQuantidade Arroz - Tio Joao para 8 de novo: ";
-    imprimirStatus(secao.modificarQuantidade("Arroz - Tio Joao", 8));
+    imprimirStatus(estoque.modificarQuantidade("Arroz - Tio Joao", 8, "Mercearia"));
 
-    std::cout << "buscar Cafe - Kimimo (exata):" << std::endl;
+    std::cout << "buscar Arroz (parcial) na Mercearia:" << std::endl;
     std::vector<Produto> achados;
-    imprimirStatus(secao.buscar("Cafe - Kimimo", achados));
-    imprimirProdutos(achados);
-
-    std::cout << "buscar Cafe (parcial):" << std::endl;
-    imprimirStatus(secao.buscar("Cafe", achados));
-    imprimirProdutos(achados);
-
-    std::cout << "buscar Arroz (parcial):" << std::endl;
-    imprimirStatus(secao.buscar("Arroz", achados));
-    imprimirProdutos(achados);
-
-    std::cout << "buscar Feijao (parcial, nao existe):" << std::endl;
-    imprimirStatus(secao.buscar("Feijao", achados));
-    imprimirProdutos(achados);
-
-    std::cout << "remover Cafe - Kimimo: ";
-    imprimirStatus(secao.remover("Cafe - Kimimo"));
-
-    std::cout << "remover Cafe - Kimimo de novo: ";
-    imprimirStatus(secao.remover("Cafe - Kimimo"));
-
-    std::cout << "produtos restantes (ordem do set):" << std::endl;
-    const std::set<Produto> &todos = secao.getProdutos();
-    for (std::set<Produto>::const_iterator it = todos.begin();
-         it != todos.end(); ++it) {
-        std::cout << "  " << it->getNome()
-                  << " | qnt: " << it->getQuantidade()
-                  << " | preco: " << it->getPreco() << std::endl;
+    imprimirStatus(estoque.buscarProduto("Arroz", "Mercearia", achados));
+    for (std::vector<Produto>::size_type i = 0; i < achados.size(); ++i) {
+        std::cout << "  " << achados[i].getNome()
+                  << " | qnt: " << achados[i].getQuantidade()
+                  << " | preco: " << achados[i].getPreco() << std::endl;
     }
 
-    std::cout << "vazia no fim: " << (secao.vazia() ? "sim" : "nao") << std::endl;
+    std::cout << "buscar Arroz na NaoExiste (deve limpar o vetor): ";
+    imprimirStatus(estoque.buscarProduto("Arroz", "NaoExiste", achados));
+    std::cout << "  achados depois: " << achados.size() << std::endl;
+
+    std::cout << "buscar Feijao (nao existe) na Mercearia: ";
+    imprimirStatus(estoque.buscarProduto("Feijao", "Mercearia", achados));
+
+    std::cout << "vazio no fim: " << (estoque.vazio() ? "sim" : "nao")
+              << std::endl;
+
+    std::cout << "estoque completo (ordem do map):" << std::endl;
+    imprimirEstoque(estoque);
 
     return 0;
 }

@@ -149,6 +149,14 @@ Uso o `std::find` no método de busca para cumprir o requisito do enunciado.
 9. Busca parcial (nome sem `" - "`) compara o prefixo de cada produto com
    igualdade exata: `"Cafe"` acha `"Cafe - Kimimo"`, mas não acha
    `"Cafezinho - Kimimo"`.
+10. Nos métodos do `Estoque` que recebem seção, a seção é conferida **primeiro**:
+    se não existe → `SECAO_INEXISTENTE`, sem olhar o produto. Ex.: produto com
+    nome sem `" - "` e valor 0 em seção inexistente devolve `SECAO_INEXISTENTE`.
+11. `criarSecao` com nome vazio (`""`) devolve `ARGUMENTO_INVALIDO`; nome
+    repetido devolve `SECAO_EXISTENTE`.
+12. `Estoque::vazio()` significa **nenhuma seção criada** (`secoes.empty()`).
+    Seção criada mas sem produtos continua aparecendo na exibição do estoque,
+    com o nome da seção e nenhum produto abaixo.
 
 ## 6. Etapas
 
@@ -164,7 +172,14 @@ Cada etapa termina compilando com o comando do `README.md` e testável.
   para testar direto.
 
 - **Etapa 3 — `Estoque`.** Cria `Estoque.hpp/.cpp` (`map<string, Secao>`) com
-  todos os métodos. Ajusta o `main.cpp` para um teste direto.
+  todos os métodos. Em cada método que recebe seção: acha a seção com o
+  `find` do `map` e, se não achar, `SECAO_INEXISTENTE` (decisão 10); achando,
+  delega para a `Secao` e devolve o status dela. `criarSecao` confere nome
+  vazio (decisão 11) e seção repetida, e usa `insert` — nunca `operator[]`,
+  porque ele criaria uma `Secao` vazia e `Secao` não tem construtor padrão.
+  `vazio()`/`getSecoes()` conforme a decisão 12. Ajusta o `main.cpp` para um
+  teste direto: cria seções, adiciona produtos, exercita cada status novo
+  (`SECAO_EXISTENTE`, `SECAO_INEXISTENTE`) e imprime o `map` por inteiro.
 
 - **Etapa 4 — `Interface`: `FIM`, ajuda e comando inválido.** Cria
   `Interface.hpp/.cpp` lendo linhas; trata `-h`/`--help`, `FIM` e comando
