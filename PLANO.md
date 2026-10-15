@@ -62,7 +62,7 @@ Guarda:
 
 Métodos:
 - construtor;
-- `nome()`, `quantidade()`, `preco()`;
+- `getNome()`, `getQuantidade()`, `getPreco()`;
 - `setQuantidade(int)`, `setPreco(double)`;
 - `operator<` — compara **só o `nome`**, ordem alfabética, sensível a
   maiúsculas/minúsculas (é o `<` do `std::string`);
@@ -78,7 +78,7 @@ Guarda:
 - `std::set<Produto> produtos`.
 
 Métodos (os que alteram devolvem `Status`):
-- `nome()`;
+- `getNome()`;
 - `adicionar(Produto)` — `PRODUTO_EXISTENTE` se o nome já está no set;
 - `remover(nome)`;
 - `modificarPreco(nome, novoPreco)`;
@@ -86,7 +86,7 @@ Métodos (os que alteram devolvem `Status`):
 - `buscar(nome, std::vector<Produto>& saida)` — se `nome` tem `" - "`, busca
   exata; senão, busca parcial pelo trecho antes de `" - "`;
 - `vazia()`;
-- `produtos()`.
+- `getProdutos()`.
 
 Detalhe: como o elemento de um `set` é `const`, para alterar preço/quantidade
 eu localizo o produto, guardo os dados, removo (`erase`) e insiro de novo com
@@ -104,7 +104,7 @@ Métodos:
 - `modificarPreco(nome, novoPreco, secao)`;
 - `modificarQuantidade(nome, novaQnt, secao)`;
 - `buscarProduto(nome, secao, std::vector<Produto>& saida)`;
-- `vazio()` / `secoes()`.
+- `vazio()` / `getSecoes()`.
 
 ### 3.4 `Interface`
 
@@ -138,6 +138,17 @@ Uso o `std::find` no método de busca para cumprir o requisito do enunciado.
 4. Seção informada e não existente devolve `SECAO_INEXISTENTE`.
 5. Quantidade/preço iguais devolvem `VALOR_IGUAL`; valores <= 0 devolvem
    `VALOR_INVALIDO`.
+6. `Secao::adicionar` valida na ordem: formato do nome sem `" - "` →
+   `ARGUMENTO_INVALIDO`; quantidade/preço <= 0 → `VALOR_INVALIDO`; produto
+   repetido → `PRODUTO_EXISTENTE`.
+7. `modificarPreco`/`modificarQuantidade` validam na ordem: produto não
+   existe → `PRODUTO_INEXISTENTE`; valor <= 0 → `VALOR_INVALIDO`; valor igual
+   ao atual → `VALOR_IGUAL`.
+8. `buscar` devolve `PRODUTO_INEXISTENTE` quando nada é encontrado (o vetor
+   sai vazio); `OK` quando acha um ou mais.
+9. Busca parcial (nome sem `" - "`) compara o prefixo de cada produto com
+   igualdade exata: `"Cafe"` acha `"Cafe - Kimimo"`, mas não acha
+   `"Cafezinho - Kimimo"`.
 
 ## 6. Etapas
 
