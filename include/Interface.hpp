@@ -19,6 +19,12 @@ private:
     // O nome é a seção ou o produto citado no comando.
     void mostrarStatus(Status status, const std::string &nome) const;
 
+    // Imprime uma linha com nome, preço (duas casas) e quantidade do produto.
+    void mostrarProduto(const Produto &produto) const;
+
+    // Remove os espaços que sobraram no fim de um texto lido com getline.
+    void cortarFim(std::string &texto) const;
+
 public:
     // Construtor de interface.
     // explicit bloqueia a conversão automática do Estoque para uma interface, apenas quando é escrito Interface(Estoque &estoque)

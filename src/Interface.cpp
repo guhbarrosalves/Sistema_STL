@@ -1,8 +1,12 @@
 #include "Interface.hpp"
 
+#include <iomanip>
 #include <iostream>
+#include <map>
+#include <set>
 #include <sstream>
 #include <string>
+#include <vector>
 
 Interface::Interface(Estoque &estoque) : m_estoque(estoque) {}
 
@@ -76,6 +80,23 @@ void Interface::mostrarStatus(Status status, const std::string &nome) const {
     }
 }
 
+void Interface::mostrarProduto(const Produto &produto) const {
+    // fixed + setprecision(2) é o que faz o preço sair com duas casas (12.50)
+    std::cout << produto.getNome()
+              << " | preco: " << std::fixed << std::setprecision(2)
+              << produto.getPreco()
+              << " | quantidade: " << produto.getQuantidade();
+}
+
+void Interface::cortarFim(std::string &texto) const {
+    std::string::size_type fim = texto.find_last_not_of(" \t");
+    if (fim == std::string::npos) {
+        texto.clear();
+    } else {
+        texto.erase(fim + 1);
+    }
+}
+
 void Interface::executar() {
     std::string linha;
 
@@ -129,6 +150,7 @@ void Interface::executar() {
             // O nome vem no fim da linha: o getline junta tudo em um campo só,
             // então "Cafe - Kimimo" não se quebra em três (decisão 17)
             std::getline(iss >> std::ws, nome);
+            cortarFim(nome);
             if (nome.empty()) {
                 std::cout << "Erro: ADD_PRODUTO espera 4 argumentos: preco"
                           << " quantidade secao nome-do-produto." << std::endl;
@@ -173,6 +195,7 @@ void Interface::executar() {
             }
 
             std::getline(iss >> std::ws, nome);
+            cortarFim(nome);
             if (nome.empty()) {
                 std::cout << "Erro: MOD_PRECO espera 3 argumentos: preco"
                           << " secao nome-do-produto." << std::endl;
@@ -206,6 +229,7 @@ void Interface::executar() {
             }
 
             std::getline(iss >> std::ws, nome);
+            cortarFim(nome);
             if (nome.empty()) {
                 std::cout << "Erro: MOD_QNT espera 3 argumentos: quantidade"
                           << " secao nome-do-produto." << std::endl;
@@ -238,6 +262,7 @@ void Interface::executar() {
             }
 
             std::getline(iss >> std::ws, nome);
+            cortarFim(nome);
             if (nome.empty()) {
                 std::cout << "Erro: REM_PROD espera 2 argumentos: secao"
                           << " nome-do-produto." << std::endl;
@@ -251,6 +276,68 @@ void Interface::executar() {
                 mostrarStatus(status, secao);
             } else {
                 mostrarStatus(status, nome);
+            }
+        } else if (comando == "BUSCAR_PROD") {
+            std::string secao;
+            std::string nome;
+
+            if (!(iss >> secao)) {
+                std::cout << "Erro: BUSCAR_PROD espera 2 argumentos: secao"
+                          << " nome-do-produto." << std::endl;
+                continue;
+            }
+
+            std::getline(iss >> std::ws, nome);
+            cortarFim(nome);
+            if (nome.empty()) {
+                std::cout << "Erro: BUSCAR_PROD espera 2 argumentos: secao"
+                          << " nome-do-produto." << std::endl;
+                continue;
+            }
+
+            std::vector<Produto> resultados;
+            Status status = m_estoque.buscarProduto(nome, secao, resultados);
+            if (status == SECAO_INEXISTENTE) {
+                mostrarStatus(status, secao);
+            } else if (status == PRODUTO_INEXISTENTE) {
+                mostrarStatus(status, nome);
+            } else {
+                // Um resultado por linha, em ordem alfabética (a do set)
+                std::vector<Produto>::const_iterator it;
+                for (it = resultados.begin(); it != resultados.end(); ++it) {
+                    mostrarProduto(*it);
+                    std::cout << " | secao: " << secao << std::endl;
+                }
+            }
+        } else if (comando == "ESTOQUE") {
+            std::string extra;
+            if (iss >> extra) {
+                std::cout << "Erro: ESTOQUE nao recebe argumentos, mas"
+                          << " sobrou: " << extra << std::endl;
+                continue;
+            }
+
+            // vazio() quer dizer nenhuma seção criada (decisão 12)
+            if (m_estoque.vazio()) {
+                std::cout << "Estoque vazio." << std::endl;
+                continue;
+            }
+
+            // O map entrega as seções em ordem alfabética
+            std::map<std::string, Secao>::const_iterator itSecao;
+            for (itSecao = m_estoque.getSecoes().begin();
+                 itSecao != m_estoque.getSecoes().end(); ++itSecao) {
+                std::cout << itSecao->second.getNome() << ":" << std::endl;
+
+                // Seção vazia fica só com o cabeçalho (decisão 12)
+                const std::set<Produto> &produtos =
+                    itSecao->second.getProdutos();
+                std::set<Produto>::const_iterator itProduto;
+                for (itProduto = produtos.begin();
+                     itProduto != produtos.end(); ++itProduto) {
+                    mostrarProduto(*itProduto);
+                    std::cout << std::endl;
+                }
             }
         } else {
             std::cout << "Comando invalido: " << linha << std::endl;
