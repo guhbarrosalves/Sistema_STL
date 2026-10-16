@@ -161,6 +161,97 @@ void Interface::executar() {
             } else {
                 mostrarStatus(status, nome);
             }
+        } else if (comando == "MOD_PRECO") {
+            std::string precoTexto;
+            std::string secao;
+            std::string nome;
+
+            if (!(iss >> precoTexto >> secao)) {
+                std::cout << "Erro: MOD_PRECO espera 3 argumentos: preco"
+                          << " secao nome-do-produto." << std::endl;
+                continue;
+            }
+
+            std::getline(iss >> std::ws, nome);
+            if (nome.empty()) {
+                std::cout << "Erro: MOD_PRECO espera 3 argumentos: preco"
+                          << " secao nome-do-produto." << std::endl;
+                continue;
+            }
+
+            double preco;
+            if (!paraPreco(precoTexto, preco)) {
+                std::cout << "Erro: preco invalido: " << precoTexto
+                          << std::endl;
+                continue;
+            }
+
+            Status status = m_estoque.modificarPreco(nome, preco, secao);
+            if (status == OK) {
+                std::cout << "Preco atualizado: " << nome << std::endl;
+            } else if (status == SECAO_INEXISTENTE) {
+                mostrarStatus(status, secao);
+            } else {
+                mostrarStatus(status, nome);
+            }
+        } else if (comando == "MOD_QNT") {
+            std::string qntTexto;
+            std::string secao;
+            std::string nome;
+
+            if (!(iss >> qntTexto >> secao)) {
+                std::cout << "Erro: MOD_QNT espera 3 argumentos: quantidade"
+                          << " secao nome-do-produto." << std::endl;
+                continue;
+            }
+
+            std::getline(iss >> std::ws, nome);
+            if (nome.empty()) {
+                std::cout << "Erro: MOD_QNT espera 3 argumentos: quantidade"
+                          << " secao nome-do-produto." << std::endl;
+                continue;
+            }
+
+            int quantidade;
+            if (!paraInteiro(qntTexto, quantidade)) {
+                std::cout << "Erro: quantidade invalida: " << qntTexto
+                          << std::endl;
+                continue;
+            }
+
+            Status status = m_estoque.modificarQuantidade(nome, quantidade, secao);
+            if (status == OK) {
+                std::cout << "Quantidade atualizada: " << nome << std::endl;
+            } else if (status == SECAO_INEXISTENTE) {
+                mostrarStatus(status, secao);
+            } else {
+                mostrarStatus(status, nome);
+            }
+        } else if (comando == "REM_PROD") {
+            std::string secao;
+            std::string nome;
+
+            if (!(iss >> secao)) {
+                std::cout << "Erro: REM_PROD espera 2 argumentos: secao"
+                          << " nome-do-produto." << std::endl;
+                continue;
+            }
+
+            std::getline(iss >> std::ws, nome);
+            if (nome.empty()) {
+                std::cout << "Erro: REM_PROD espera 2 argumentos: secao"
+                          << " nome-do-produto." << std::endl;
+                continue;
+            }
+
+            Status status = m_estoque.removerProduto(nome, secao);
+            if (status == OK) {
+                std::cout << "Produto removido: " << nome << std::endl;
+            } else if (status == SECAO_INEXISTENTE) {
+                mostrarStatus(status, secao);
+            } else {
+                mostrarStatus(status, nome);
+            }
         } else {
             std::cout << "Comando invalido: " << linha << std::endl;
         }

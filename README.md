@@ -46,5 +46,5 @@ Escreva com as suas palavras:
 
 - Modelo usado: Big Pickle
 - Um pedido que deu certo, e por que você acha que deu certo:
-- Um pedido que deu errado, o que veio errado e como você mudou o pedido:
+- Um pedido que deu errado, o que veio errado e como você mudou o pedido: Como eu gostaria que funcionasse a interface. Ele veio querendo criar métodos de tokenização, mas como não conseguia compreender muito bem, pedi que ele fizesse semelhante ao projeto da agência espacial.
 - Uma coisa que a IA sugeriu e você recusou, e por quê: Caso o usuário não desse nome para a seção, aceitasse como argumento válido. Não aceitei porque não há sentido uma seção não ter nome.

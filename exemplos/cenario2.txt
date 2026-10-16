@@ -1,0 +1,24 @@
+CRIAR_SECAO Bebidas
+CRIAR_SECAO Padaria
+ADD_PRODUTO 12.50 30 Bebidas Cafe - Kimimo
+ADD_PRODUTO 4.90 50 Bebidas Acucar - Uniao
+MOD_PRECO 15.75 Bebidas Cafe - Kimimo
+MOD_PRECO 15.75 Bebidas Cafe - Kimimo
+MOD_PRECO 0 Bebidas Cafe - Kimimo
+MOD_PRECO -3.00 Bebidas Cafe - Kimimo
+MOD_PRECO 9.99 Bebidas Cha - Matte
+MOD_PRECO 9.99 Mercearia Cafe - Kimimo
+MOD_PRECO abc Bebidas Cafe - Kimimo
+MOD_PRECO 9.99 Bebidas
+MOD_QNT 45 Bebidas Cafe - Kimimo
+MOD_QNT 45 Bebidas Cafe - Kimimo
+MOD_QNT 0 Bebidas Cafe - Kimimo
+MOD_QNT 3.5 Bebidas Cafe - Kimimo
+MOD_QNT 10 Bebidas Cha - Matte
+MOD_QNT 10 Padaria Cafe - Kimimo
+MOD_QNT 10 Bebidas
+REM_PROD Bebidas Acucar - Uniao
+REM_PROD Bebidas Acucar - Uniao
+REM_PROD Mercearia Cafe - Kimimo
+REM_PROD Bebidas
+FIM
