@@ -1,0 +1,25 @@
+-h
+ESTOQUE
+CRIAR_SECAO Bebidas
+CRIAR_SECAO Bebidas
+CRIAR_SECAO Limpeza Higiene
+CRIAR_SECAO
+ADD_PRODUTO abc 5 Inexistente Cafe - Kimimo
+ADD_PRODUTO 0 10 Inexistente Cafe - Kimimo
+ADD_PRODUTO 12.50 30 Inexistente Cafe
+ADD_PRODUTO 12.50 30 Bebidas Cafe
+ADD_PRODUTO 4.90 x Bebidas Acucar - Uniao
+ADD_PRODUTO
+MOD_PRECO 9.99 Inexistente Cafe - Kimimo
+MOD_PRECO abc Bebidas Cafe - Kimimo
+MOD_QNT 2.5 Bebidas Cafe - Kimimo
+MOD_QNT 10 Inexistente
+REM_PROD Bebidas
+REM_PROD Inexistente Cafe - Kimimo
+BUSCAR_PROD
+BUSCAR_PROD Bebidas
+ESTOQUE extra
+COMANDO_QUALQUER
+ESTOQUE
+--help
+FIM

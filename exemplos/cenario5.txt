@@ -1,0 +1,23 @@
+CRIAR_SECAO Bebidas
+CRIAR_SECAO Padaria
+ADD_PRODUTO 12.50 30 Bebidas Cafe - Kimimo
+ADD_PRODUTO 9.99 12 Bebidas Cafe - Tres Coracoes
+ADD_PRODUTO 3.50 20 Bebidas Cafezinho - Dona Paula
+ADD_PRODUTO 7.80 15 Padaria Pao de Forma - Wickbold
+ADD_PRODUTO 4.90 50 Padaria acucar - Uniao
+BUSCAR_PROD Bebidas Cafe
+BUSCAR_PROD Bebidas cafe
+BUSCAR_PROD Bebidas Cafezinho
+BUSCAR_PROD Padaria Pao de Forma
+BUSCAR_PROD Bebidas Cha
+ESTOQUE
+MOD_PRECO 13.90 Bebidas Cafe - Kimimo
+MOD_QNT 25 Bebidas Cafe - Kimimo
+ESTOQUE
+REM_PROD Bebidas Cafe - Tres Coracoes
+BUSCAR_PROD Bebidas Cafe
+REM_PROD Padaria acucar - Uniao
+ESTOQUE
+ADD_PRODUTO 5.20 40 Padaria acucar - Uniao
+ESTOQUE
+FIM
