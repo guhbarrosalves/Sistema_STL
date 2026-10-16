@@ -108,8 +108,10 @@ Métodos:
 
 ### 3.4 `Interface`
 
-Não é uma classe "de dados": lê linha a linha do `cin`, quebra em tokens
-respeitando as aspas, chama o método certo do `Estoque` e imprime a mensagem
+Não é uma classe "de dados": lê uma linha por vez com `getline`, parseia a
+linha com `std::istringstream` (`>>` para cada campo de uma palavra;
+`getline(iss >> ws, ...)` para o nome do produto, que vem no fim e pode ter
+espaços), chama o método certo do `Estoque` e imprime a mensagem
 correspondente ao `Status`. Também trata `-h`/`--help`, `FIM`, comando
 inválido e número de argumentos errado.
 
@@ -122,6 +124,7 @@ inválido e número de argumentos errado.
 | `Secao::buscar` | `std::find` (algorithm) | Busca exata usando `operator==` de `Produto`, como no exemplo da aula. |
 | `Secao` (interno) | `std::set::find` | Checar duplicado e localizar produto pelo `operator<`. |
 | Retornos de busca | `std::vector<Produto>` | A busca parcial devolve nenhum, um ou vários; `vector` é a coleção de tamanho variável mais simples. |
+| Leitura da linha | `std::istringstream` + `getline` | `>>` separa os campos de uma palavra; `getline` pega o nome do produto (com espaços) como o resto da linha. |
 | Nomes | `std::string` | Texto padrão. |
 
 Observação didática: `set::find` é O(log n); `std::find` varre tudo, O(n).
@@ -131,8 +134,10 @@ Uso o `std::find` no método de busca para cumprir o requisito do enunciado.
 
 1. Valor do `map` é um objeto `Secao` (`map<string, Secao>`), e a `Secao`
    guarda o `set<Produto>`. Mantém as três classes com papel claro.
-2. `ADD_PRODUTO` exige o nome no formato `"nome - marca"`. Nome sem `" - "`
-   devolve `ARGUMENTO_INVALIDO`. O nome sozinho só é aceito na busca.
+2. `ADD_PRODUTO` exige o nome no formato `"nome - marca"` (sem aspas na
+   linha). O nome do produto é sempre o **último campo da linha**, lido com
+   `getline` — assim ele pode conter espaços. Nome sem `" - "` devolve
+   `ARGUMENTO_INVALIDO`. O nome sozinho só é aceito na busca.
 3. `operator<` compara só o `nome` completo (`"nome - marca"`), sensível a
    maiúsculas.
 4. Seção informada e não existente devolve `SECAO_INEXISTENTE`.
@@ -157,6 +162,23 @@ Uso o `std::find` no método de busca para cumprir o requisito do enunciado.
 12. `Estoque::vazio()` significa **nenhuma seção criada** (`secoes.empty()`).
     Seção criada mas sem produtos continua aparecendo na exibição do estoque,
     com o nome da seção e nenhum produto abaixo.
+13. As validações da `Interface` (número malformado, quantidade de
+    argumentos) acontecem **antes** do `Estoque` ser chamado. Ex.:
+    `ADD_PRODUTO abc 2 SecaoInexistente A - B` devolve erro de número, não
+    `SECAO_INEXISTENTE`.
+14. Ordem de validação da `ADD_PRODUTO`: (a) número malformado ou quantidade
+    de argumentos errada (inclusive o nome faltando) → a `Interface` mostra o
+    erro sem chamar o `Estoque`; (b) seção inexistente → `SECAO_INEXISTENTE`;
+    (c) nome sem `" - "` → `ARGUMENTO_INVALIDO`; (d) preço/quantidade ≤ 0 →
+    `VALOR_INVALIDO`; (e) produto repetido → `PRODUTO_EXISTENTE`.
+15. Nenhum argumento vai entre aspas; tudo é separado apenas por espaço.
+16. O nome de seção é **uma única palavra** (sem espaços). Palavra a mais no
+    `CRIAR_SECAO` → a `Interface` mostra erro de argumento sem chamar o
+    `Estoque`.
+17. Ordem dos campos na linha: vêm primeiro os valores, depois a seção e por
+    último o nome do produto. Ex.: `ADD_PRODUTO preco quantidade secao
+    nome - marca`. O nome do produto é lido com `getline(iss >> ws, ...)`,
+    que considera o resto da linha um campo só.
 
 ## 6. Etapas
 
@@ -186,8 +208,9 @@ Cada etapa termina compilando com o comando do `README.md` e testável.
   desconhecido. `main.cpp` passa a criar `Estoque` e chamar a `Interface`.
   Teste: `printf 'FIM\n' | ./sistema`.
 
-- **Etapa 5 — `CRIAR_SECAO` e `ADD_PRODUTO`.** Tokenizador que respeita aspas;
-  tratamento de argumentos faltando e número inválido.
+- **Etapa 5 — `CRIAR_SECAO` e `ADD_PRODUTO`.** Leitura da linha com
+  `getline` + `istringstream` (`>>` para os campos, `getline` para o nome no
+  fim); tratamento de argumentos faltando/sobrando e número inválido.
   Teste: `./sistema < exemplos/cenario1.txt`.
 
 - **Etapa 6 — `MOD_PRECO`, `MOD_QNT`, `REM_PROD`.** Inclui os casos
