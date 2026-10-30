@@ -324,6 +324,12 @@ Envie na tarefa do SIGAA o link do seu repositório público. Ele precisa ter:
 - o `README.md` preenchido, inclusive "Onde uso a STL" e "Como usei a IA";
 - um commit por etapa, mais ou menos;
 - nenhum executável, arquivo `.o` ou `.db` commitado.
+- a classe de arquivo, salvando e carregando;
+- exceções em pelo menos dois lugares, com try / catch no menu;
+- os cenários em exemplos/;
+- o trecho novo no AGENTS.md;
+- a seção "Evolução" no README.md , escrita por você, sem IA (modelo abaixo);
+nenhum executável, .o ou arquivo de dados commitado.
 
 ## 8. Como será avaliado
 
@@ -337,6 +343,11 @@ Envie na tarefa do SIGAA o link do seu repositório público. Ele precisa ter:
   com tudo.
 - Conversa de cerca de cinco minutos comigo, sobre as escolhas de container
   e sobre uma parte do código que a IA escreveu.
+- O sistema salva e carrega, e começa vazio se não há arquivo.
+- Há exceções em dois lugares ou mais, e o menu não quebra com entrada ruim.
+- Os cenários de teste existem e rodam.
+- A seção "Evolução", com as suas palavras, mostrando que você leu o que a IA gerou e batendo
+  com o histórico de commits.
 
 Os desafios contam a favor de quem fizer, mas não substituem nada do que é
 obrigatório.

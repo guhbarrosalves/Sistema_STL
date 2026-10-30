@@ -75,3 +75,12 @@ REM_PROD secao nome - marca
 BUSCAR_PROD secao nome
 ESTOQUE // Exibe todo o estoque
 FIM //encerra a inserção no estoque
+
+## Evolução
+
+A evolução consiste em implementar a persistência de arquivos, ou seja, o armazenamento de dados entre uma execução e outra.
+- Implementar uma nova classe, chamada Arquivo. Essa classe é a única responsável por acessar os arquivos que serão usados para implementar a persistência de arquivos. Ela terá dois métodos, save e load. Esses dois métodos, vão trabalhar sobre a seção, produto, preço e quantidade.
+- Um registro por linha, com os campos separados por ';'. No nosso caso, 'seção;produto;preço;quantidade'.
+- O arquivo de dados não entra no repositório: coloque o nome dele no .gitignore.
+
+Realizar o tratamento de entradas inválidas sem encerrar.

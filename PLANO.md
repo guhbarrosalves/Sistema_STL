@@ -221,9 +221,12 @@ Cada etapa termina compilando com o comando do `README.md` e testável.
   parcial por prefixo, e exibição completa por seção.
   Teste: `./sistema < exemplos/cenario3.txt`.
 
-- **Etapa 8 — Fechamento.** Cria/afina os `exemplos/`, roda todos e confere os
+- **Etapa 8 — Cria/afina os `exemplos/`, roda todos e confere os
   resultados. Preenche no `README.md` só a coluna que cabe à IA (as seções
   "Onde uso a STL" e "Como usei a IA" ficam por conta do estudante).
+
+- **Etapa 9 — Implementar a classe Arquivo e os dois métodos: save e load.
+  Os métodos vão trabalhar sobre seção, produto, preço e quantidade.
 
 ## 7. Fora do escopo
 

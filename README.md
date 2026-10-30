@@ -48,3 +48,16 @@ Escreva com as suas palavras:
 - Um pedido que deu certo, e por que você acha que deu certo: Todo o restante deu certo, acredito que porque sempre perguntava sobre as ambiguidades e coisas faltantes para corrigir e tornar a descrição mais clara.
 - Um pedido que deu errado, o que veio errado e como você mudou o pedido: Como eu gostaria que funcionasse a interface. Ele veio querendo criar métodos de tokenização, mas como não conseguia compreender muito bem, pedi que ele fizesse semelhante ao projeto da agência espacial.
 - Uma coisa que a IA sugeriu e você recusou, e por quê: Caso o usuário não desse nome para a seção, aceitasse como argumento válido. Não aceitei porque não há sentido uma seção não ter nome.
+
+## Evolução
+### Arquivo
+- O que pedi à IA:
+- O que encontrei ao ler o código (ela fez o que eu pedi? algo veio
+diferente?):
+### Exceções
+- O que pedi à IA:
+- O que encontrei ao ler o código (onde lança, onde trata, o que o usuário vê):
+### Revisão
+- O que a IA apontou, e os dois problemas que corrigi:
+- Um problema que a IA apontou e eu não corrigi, e por quê (ou, se ela só
+acertou, uma coisa que ela errou):
